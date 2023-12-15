@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 from board import Square, GameState
-from utils.utils import iter_board_indices
+from utils import board_indices
 
 
 GAMESIZE = 480
@@ -42,7 +42,7 @@ def draw_gamestate(gamestate: GameState):
     screen.fill("WHITE")
     screen.blit(board, (0, 0))
 
-    for x, y in iter_board_indices():
+    for x, y in board_indices:
         piece = gamestate.get_piece_at(Square(index=(x, y)))
         if piece:
             screen.blit(piece_images[piece.char], (y * PIECE_OFFSET, x * PIECE_OFFSET))
@@ -52,7 +52,7 @@ def draw_gamestate(gamestate: GameState):
 
 def highlight_coordinates(bits: np.uint64):
     bit_string = "{0:b}".format(bits).zfill(64)
-    for bit, (x, y) in zip(bit_string, iter_board_indices()):
+    for bit, (x, y) in zip(bit_string, board_indices):
         if bit == "1":
             rect = (y * 60, x * 60, 60, 60)
             shape_surf = pygame.Surface(pygame.Rect(rect).size)
