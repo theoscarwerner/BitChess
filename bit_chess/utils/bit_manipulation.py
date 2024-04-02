@@ -1,7 +1,9 @@
-from square import Square
+# from square import Square
+import numpy as np
 
 
-def get_cross_bitboard(square: Square):
+def get_cross_bitboard(square):
+# def get_cross_bitboard(square: Square):
     """
     Computes the bitboard of all reachable position from square
     assuming there are no pieces on the board. E.g a rook on d5 would return
@@ -10,7 +12,7 @@ def get_cross_bitboard(square: Square):
         8 | 0  0  0  1  0  0  0  0
         7 | 0  0  0  1  0  0  0  0
         6 | 0  0  0  1  0  0  0  0
-        5 | 1  1  1  0  1  1  1  1
+        5 | 0  1  1  0  1  1  1  1
         4 | 0  0  0  1  0  0  0  0
         3 | 0  0  0  1  0  0  0  0
         2 | 0  0  0  1  0  0  0  0

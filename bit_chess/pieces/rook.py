@@ -5,15 +5,16 @@ from precomputations.rook import precomputed_moves
 
 class Rook(Piece):
     def __init__(self, color):
-        super().__init__(color, "R", 3)
+        self.color = color
+        self.idx = 3
 
-    def get_valid_moves(self, from_square, gamestate):
+    def get_valid_moves(self, square, gamestate):
         # Get moves if board was empty
-        unfiltered_moves = get_cross_bitboard(from_square)
+        unfiltered_moves = get_cross_bitboard(square)
         # Get pieces that block it's path
-        blocker_bits = unfiltered_moves & gamestate.pieces()
+        blocker_bits = unfiltered_moves & gamestate.board[-1]
         # get available moves from precomputation
-        moves = precomputed_moves[(from_square.bits, blocker_bits)]
+        moves = precomputed_moves[(square.bits, blocker_bits)]
         # Remove moves that capture a piece of the same color
-        valid_moves = moves & ~gamestate.board_position[self.color]
+        valid_moves = moves & ~gamestate.board[self.color]
         return valid_moves

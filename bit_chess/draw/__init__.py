@@ -2,6 +2,7 @@ import pygame
 import numpy as np
 from board import Square, GameState
 from utils import board_indices
+from pieces import Knight, Rook, Bishop, Queen, King, Pawn
 
 
 GAMESIZE = 480
@@ -24,6 +25,29 @@ piece_images = {
     "k": pygame.image.load("draw/images/bK.png"),
 }
 
+
+def get_piece_image(piece):
+    if isinstance(piece, Knight):
+        char = "N"
+    elif isinstance(piece, King):
+        char = "K"
+    elif isinstance(piece, Queen):
+        char = "Q"
+    elif isinstance(piece, Pawn):
+        char = "P"
+    elif isinstance(piece, Bishop):
+        char = "B"
+    elif isinstance(piece, Rook):
+        char = "R"
+    else:
+        raise "Can't detect piece."
+
+    if piece.color == 0:
+        char = char.lower()
+
+    return piece_images[char]
+
+
 screen = pygame.display.set_mode((GAMESIZE, GAMESIZE))
 pygame.display.set_caption("Chess")
 
@@ -44,8 +68,8 @@ def draw_gamestate(gamestate: GameState):
 
     for x, y in board_indices:
         piece = gamestate.get_piece_at(Square(index=(x, y)))
-        if piece:
-            screen.blit(piece_images[piece.char], (y * PIECE_OFFSET, x * PIECE_OFFSET))
+        if piece != 0:
+            screen.blit(get_piece_image(piece), (y * PIECE_OFFSET, x * PIECE_OFFSET))
 
     pygame.display.update()
 

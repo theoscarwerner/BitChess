@@ -4,6 +4,9 @@ import numpy as np
 import draw
 from draw import GAMESIZE, PIECE_OFFSET
 from board import GameState, Square
+from utils.action import is_in_check
+from cProfile import Profile
+from pstats import SortKey, Stats
 
 
 x_to_rank = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f", 6: "g", 7: "h"}
@@ -58,6 +61,9 @@ class Main():
                             continue
 
                         move_bits = piece.get_valid_moves(from_square, self.gamestate)
+                        if move_bits == 0:
+                            print("This piece can't move!")
+                            continue
 
                         # If there are valid moves
                         if move_bits != 0:
@@ -76,12 +82,24 @@ class Main():
             if from_square and to_square and from_square != to_square:
                 if to_square.bits & move_bits != 0:
                     print("Valid!")
+
                     self.gamestate.update(piece, from_square, to_square)
-                    # self.board.draw_gamestate(self.gamestate, self.screen)
 
+                    import time
+
+                    s = time.time()
+                    with Profile() as profile:
+                        for _ in range(10000):
+                            self.gamestate.generate_moves(0)
+                            self.gamestate.generate_moves(1)
+
+                        stats = Stats(profile)
+                        stats.strip_dirs().sort_stats(SortKey.CUMULATIVE).print_stats()
+
+
+                    if is_in_check(self.gamestate, piece, to_square):
+                        print("Check!")
                     from_square, to_square = False, False
-
-                    # print(self.gamestate.evaluate())
 
                 else:
                     print("Invalid Move!")

@@ -5,7 +5,7 @@ from constants import range_grid, files, ranks
 class Square():
     def __init__(self,
                  shift: int | None = None,
-                 index: tuple | None = None):
+                 index: tuple | None = None) -> None:
         """
         Compute the bitstring marking just one square. One of shift/index must be passed.
 
@@ -37,8 +37,14 @@ class Square():
         self.bits = square_zero >> np.uint64(shift)
         self.square_index = shift
 
+    def get_rank(self) -> int:
+        return self.square_index // 8
+
     def get_rank_bits(self) -> np.uint64:
         return ranks[self.square_index // 8]
+
+    def get_file(self) -> int:
+        return self.square_index % 8
 
     def get_file_bits(self) -> np.uint64:
         return files[self.square_index % 8]

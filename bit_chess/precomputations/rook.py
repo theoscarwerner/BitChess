@@ -80,7 +80,7 @@ def compute_all_rook_moves():
         square = Square(index=board_idx)
         cross_bitboard = get_cross_bitboard(square)
         cross_array = bits_to_array(cross_bitboard)
-        for blockers_bit_array in get_piece_blockers(square, cross_array):
+        for blockers_bit_array in get_piece_blockers(cross_array):
             available_moves_bits = compute_available_moves(blockers_bit_array, square)
 
             blocker_bit_board = array_to_bits(blockers_bit_array)
